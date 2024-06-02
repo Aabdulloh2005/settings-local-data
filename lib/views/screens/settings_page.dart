@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:homework_48/providers/settings_notifier.dart';
 import 'package:homework_48/views/widgets/drawer_widget.dart';
 
@@ -10,6 +11,13 @@ class SettingsPage extends StatefulWidget {
 }
 
 class _SettingsPageState extends State<SettingsPage> {
+  Color pickerColor = Color(0xff443a49);
+  Color currentColor = Color(0xff443a49);
+
+  void changeColor(Color color) {
+    setState(() => pickerColor = color);
+  }
+
   @override
   Widget build(BuildContext context) {
     final settingsNotifier = SettingsNotifier.of(context);
@@ -28,7 +36,10 @@ class _SettingsPageState extends State<SettingsPage> {
                 return SwitchListTile(
                   title: Text(
                     "Dark mode",
-                    style: TextStyle(fontSize: settingsNotifier.sizeText.size),
+                    style: TextStyle(
+                      fontSize: settingsNotifier.sizeText.size,
+                      color: settingsNotifier.sizeText.color,
+                    ),
                   ),
                   value: settingsNotifier.appTheme.themeMode == ThemeMode.dark,
                   onChanged: (value) {
@@ -37,7 +48,13 @@ class _SettingsPageState extends State<SettingsPage> {
                 );
               },
             ),
-            
+            Text(
+              "Text Size:",
+              style: TextStyle(
+                fontSize: settingsNotifier.sizeText.size,
+                color: settingsNotifier.sizeText.color,
+              ),
+            ),
             ListenableBuilder(
               listenable: settingsNotifier,
               builder: (context, child) {
@@ -50,11 +67,48 @@ class _SettingsPageState extends State<SettingsPage> {
                   onChanged: (value) async {
                     settingsNotifier.setSizeText(value);
                     await settingsNotifier.loadSizeText();
-                    // setState(() {});
                   },
                 );
               },
-            )
+            ),
+            ElevatedButton(
+              onPressed: () async {
+                Color? selectedColor = await showDialog<Color>(
+                  context: context,
+                  builder: (context) {
+                    return AlertDialog(
+                      actions: [
+                        FilledButton(
+                          onPressed: () {
+                            Navigator.pop(context, pickerColor);
+                          },
+                          child: const Text("Save"),
+                        ),
+                      ],
+                      title: Text(
+                        'Pick a color!',
+                      ),
+                      content: SingleChildScrollView(
+                        child: BlockPicker(
+                          pickerColor: pickerColor,
+                          onColorChanged: changeColor,
+                        ),
+                      ),
+                    );
+                  },
+                );
+                if (selectedColor != null) {
+                  settingsNotifier.setColor(selectedColor);
+                }
+              },
+              child: Text(
+                "Select color",
+                style: TextStyle(
+                  fontSize: settingsNotifier.sizeText.size,
+                  color: settingsNotifier.sizeText.color,
+                ),
+              ),
+            ),
           ],
         ),
       ),

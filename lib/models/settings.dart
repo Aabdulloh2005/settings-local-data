@@ -10,8 +10,10 @@ class AppTheme {
 
 class SizeText {
   double size;
+  Color color;
 
   SizeText({
     required this.size,
+    required this.color,
   });
 }

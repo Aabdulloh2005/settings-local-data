@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:homework_48/providers/settings_notifier.dart';
-import 'package:homework_48/views/screens/settings_page.dart';
 import 'package:homework_48/views/widgets/drawer_widget.dart';
 
 class HomePage extends StatefulWidget {
@@ -14,6 +13,15 @@ const List<String> dropList = ["uz", "en", "ru"];
 
 class _HomePageState extends State<HomePage> {
   String languageValue = dropList.first;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+
+    final settingsNotifier = SettingsNotifier.of(context);
+    settingsNotifier.loadSizeText();
+  }
+
   @override
   Widget build(BuildContext context) {
     final settingsNotifier = SettingsNotifier.of(context);
@@ -46,9 +54,10 @@ class _HomePageState extends State<HomePage> {
             Text(
               "Amet nostrud ipsum consectetur labore incididunt dolor velit cupidatat in deserunt consequat incididunt culpa magna. Incididunt officia excepteur enim occaecat adipisicing est elit officia. Tempor cillum cupidatat duis in ullamco duis. Cillum irure quis Lorem exercitation nostrud culpa. Non cupidatat fugiat mollit in sit magna sint aute fugiat. Enim ad adipisicing quis laboris et ullamco ut esse ad proident. Labore duis voluptate aute tempor ut ut ipsum.",
               style: TextStyle(
-                  color: Colors.grey,
-                  fontWeight: FontWeight.w500,
-                  fontSize: settingsNotifier.sizeText.size),
+                fontWeight: FontWeight.w500,
+                fontSize: settingsNotifier.sizeText.size,
+                color: settingsNotifier.sizeText.color,
+              ),
             ),
           ],
         ),

@@ -22,12 +22,12 @@ class DrawerWidget extends StatelessWidget {
                 Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(builder: (context) {
-                    return const SettingsPage();
+                    return const HomePage();
                   }),
                 );
               },
               child: const Text(
-                "Settings",
+                "Home",
                 style: TextStyle(
                   color: Colors.white,
                   fontSize: 25,
@@ -40,12 +40,12 @@ class DrawerWidget extends StatelessWidget {
                 Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(builder: (context) {
-                    return const HomePage();
+                    return const SettingsPage();
                   }),
                 );
               },
               child: const Text(
-                "Home",
+                "Settings",
                 style: TextStyle(
                   color: Colors.white,
                   fontSize: 25,
